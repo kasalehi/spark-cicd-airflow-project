@@ -8,44 +8,42 @@ on:
 
 jobs:
   upload-to-dev:
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref_name == 'dev'
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Authenticate to GCP
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      # Setup Google Cloud SDK
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      # Upload `variables.json` to Composer bucket
+      - name: Validate Variables JSON
+        run: |
+          test -f variables/dev/variables.json || echo "Missing variables.json file for dev"
+
       - name: Upload Variables JSON to GCS
         run: |
+          set -e
           gsutil cp variables/dev/variables.json gs://australia-southeast2-keyvan-b133332f-bucket/data/dev/variables.json
 
-      # Import Variables into Airflow-DEV
       - name: Import Variables into Airflow-DEV
         run: |
           gcloud composer environments run keyvan-dev \
             --location australia-southeast2 \
-            variables import -- /home/kevan/gcs/data/dev/variables.json
+            variables import -- gs://australia-southeast2-keyvan-b133332f-bucket/data/dev/variables.json
 
-      # Sync Spark job to GCS
       - name: Upload Spark Job to GCS
         run: |
           gsutil cp spark-job.py gs://keyvan/spark-job/
 
-      # Sync Airflow DAG to Airflow DEV Composer
       - name: Upload Airflow DAG to DEV
         run: |
           gcloud composer environments storage dags import \
@@ -54,44 +52,42 @@ jobs:
             --source airflow_job.py
 
   upload-to-prod:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Authenticate to GCP
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      # Setup Google Cloud SDK
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      # Upload `variables.json` to Composer bucket
+      - name: Validate Variables JSON
+        run: |
+          test -f variables/prod/variables.json || echo "Missing variables.json file for prod"
+
       - name: Upload Variables JSON to GCS
         run: |
+          set -e
           gsutil cp variables/prod/variables.json gs://australia-southeast2-keyvan-c891ca7e-bucket/data/prod/variables.json
 
-      # Import Variables into Airflow-PROD
       - name: Import Variables into Airflow-PROD
-        run: 
+        run: |
           gcloud composer environments run keyvan-prod \
             --location australia-southeast2 \
-            variables import -- /home/kevan/gcs/data/prod/variables.json
+            variables import -- gs://australia-southeast2-keyvan-c891ca7e-bucket/data/prod/variables.json
 
-      # Sync Spark job to GCS
       - name: Upload Spark Job to GCS
         run: |
           gsutil cp spark-job.py gs://keyvan/spark-job/
 
-      # Sync Airflow DAG to Airflow PROD Composer
       - name: Upload Airflow DAG to PROD
         run: |
           gcloud composer environments storage dags import \
