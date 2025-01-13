@@ -1,0 +1,9 @@
+{
+    "env":"prod",
+    "gcs_bucket":"keyvan",
+    "bq_project": "serene-broker-445515-g4",
+    "bq_dataset": "key_prod",
+    "bq_table": "transform_prod"
+
+
+}
