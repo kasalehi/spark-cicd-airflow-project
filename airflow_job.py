@@ -37,7 +37,7 @@ bq_table=Variable.get("bq_table",default_var="transform_{env}")
 file_sensor = GCSObjectExistenceSensor(
     task_id='file_sensor',
     bucket=gcs_bucket,
-    object=f"gs://keyvan/source-{env}/customer_dataset.csv",
+    object=f"gs://keyvan/source-{env}/customers_dataset.csv",
     poke_interval=10,
     mode="poke",
     dag=dag)
