@@ -38,7 +38,7 @@ jobs:
         run: |
           gcloud composer environments run keyvan-dev \
             --location australia-southeast2 \
-            variables import -- gs://australia-southeast2-keyvan-b133332f-bucket/data/dev/variables.json
+            variables import -- /home/airflow/gcs/data/dev/variables.json
 
       - name: Upload Spark Job to GCS
         run: |
@@ -47,7 +47,7 @@ jobs:
       - name: Upload Airflow DAG to DEV
         run: |
           gcloud composer environments storage dags import \
-            --environment airflow-dev \
+            --environment keyvan-dev \
             --location australia-southeast2 \
             --source airflow_job.py
 
@@ -82,7 +82,7 @@ jobs:
         run: |
           gcloud composer environments run keyvan-prod \
             --location australia-southeast2 \
-            variables import -- gs://australia-southeast2-keyvan-c891ca7e-bucket/data/prod/variables.json
+            variables import -- /home/airflow/gcs//data/prod/variables.json
 
       - name: Upload Spark Job to GCS
         run: |
@@ -91,6 +91,6 @@ jobs:
       - name: Upload Airflow DAG to PROD
         run: |
           gcloud composer environments storage dags import \
-            --environment airflow-prod \
+            --environment keyvan-prod \
             --location australia-southeast2 \
             --source airflow_job.py
