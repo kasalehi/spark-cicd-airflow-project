@@ -60,7 +60,6 @@ batch_details = {
 
 spark_task=DataprocCreateBatchOperator(
     task_id='spark_task',
-    project_id=bq_project,
     batch=batch_details,
     region="australia_southeast2",
     project_id="serene-broker-445515-g4",
