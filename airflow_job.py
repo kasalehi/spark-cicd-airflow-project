@@ -63,7 +63,7 @@ spark_task=DataprocCreateBatchOperator(
     batch=batch_details,
     region="australia_southeast2",
     project_id="serene-broker-445515-g4",
-    gcp_conn_id="google_cloud_default"
+    gcp_conn_id="google_cloud_default",
     dag=dag)
 
 
