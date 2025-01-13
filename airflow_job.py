@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.providers.google.cloud.operators.dataproc import DataprocCreateBatchOperator
-from airflow.providers.google.cloud.sensors.gcs import GCSObjectExistanceSensor
+from airflow.providers.google.cloud.sensors.gcs import GCSObjectExistenceSensor
+
 from airflow.models import Variable
 from datetime import datetime, timedelta
 
