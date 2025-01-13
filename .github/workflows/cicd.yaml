@@ -31,14 +31,14 @@ jobs:
       # Upload `variables.json` to Composer bucket
       - name: Upload Variables JSON to GCS
         run: |
-          gsutil cp variables/dev/variables.json australia-southeast2-keyvan-b133332f-bucket/data/dev/variables.json
+          gsutil cp variables/dev/variables.json gs://australia-southeast2-keyvan-b133332f-bucket/data/dev/variables.json
 
       # Import Variables into Airflow-DEV
       - name: Import Variables into Airflow-DEV
         run: |
           gcloud composer environments run keyvan-dev \
             --location australia-southeast2 \
-            variables import -- australia-southeast2-keyvan-b133332f-bucket/data/dev/variables.json
+            variables import -- /home/kevan/gcs/data/dev/variables.json
 
       # Sync Spark job to GCS
       - name: Upload Spark Job to GCS
@@ -84,12 +84,12 @@ jobs:
         run: 
           gcloud composer environments run keyvan-prod \
             --location australia-southeast2 \
-            variables import -- australia-southeast2-keyvan-c891ca7e-bucket/data/prod/variables.json
+            variables import -- /home/kevan/gcs/data/prod/variables.json
 
       # Sync Spark job to GCS
       - name: Upload Spark Job to GCS
         run: |
-          gsutil cp spark-job.py gs://gs://keyvan/spark-job/
+          gsutil cp spark-job.py gs://keyvan/spark-job/
 
       # Sync Airflow DAG to Airflow PROD Composer
       - name: Upload Airflow DAG to PROD
