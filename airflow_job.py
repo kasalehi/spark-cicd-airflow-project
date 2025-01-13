@@ -38,6 +38,7 @@ file_sensor = GCSObjectExistenceSensor(
     task_id='file_sensor',
     bucket=gcs_bucket,
     object=f"gs://keyvan/source-{env}/customers_dataset.csv",
+    google_cloud_conn_id="google_cloud_default",
     poke_interval=10,
     mode="poke",
     dag=dag)
