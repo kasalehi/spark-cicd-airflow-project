@@ -36,9 +36,9 @@ jobs:
       # Import Variables into Airflow-DEV
       - name: Import Variables into Airflow-DEV
         run: |
-          gcloud composer environments run airflow-dev \
+          gcloud composer environments run keyvan-dev \
             --location australia-southeast2 \
-            variables import -- /home/airflow/gcs/data/dev/variables.json
+            variables import -- /home/keyvan/gcs/data/dev/variables.json
 
       # Sync Spark job to GCS
       - name: Upload Spark Job to GCS
@@ -82,9 +82,9 @@ jobs:
       # Import Variables into Airflow-PROD
       - name: Import Variables into Airflow-PROD
         run: |
-          gcloud composer environments run airflow-prod \
+          gcloud composer environments run keyvan-prod \
             --location australia-southeast2 \
-            variables import -- /home/airflow/gcs/data/prod/variables.json
+            variables import -- /home/keyvan/gcs/data/prod/variables.json
 
       # Sync Spark job to GCS
       - name: Upload Spark Job to GCS
