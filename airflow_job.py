@@ -37,7 +37,7 @@ bq_table=Variable.get("bq_table",default_var="transform_{env}")
 file_sensor = GCSObjectExistenceSensor(
     task_id='file_sensor',
     bucket=gcs_bucket,
-    object=f"gs://keyvan/source-{env}/customer",
+    object=f"gs://keyvan/source-{env}/",
     poke_interval=10,
     mode="poke",
     dag=dag)
@@ -60,7 +60,7 @@ batch_details = {
 
 spark_task=DataprocCreateBatchOperator(
     task_id='spark_task',
-    project=bq_project,
+    project_id=bq_project,
     batch=batch_details,
     region="australia_southeast2",
     project_id="serene-broker-445515-g4",
